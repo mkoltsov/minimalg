@@ -15,10 +15,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @ComponentScan
 @EnableAutoConfiguration
 @RestController
+@RequestMapping("/api/v1")
 class Application extends WebMvcConfigurerAdapter {
 
     @RequestMapping("/city/{name}")
-    Map yo(@PathVariable name){
+    Map yo(@PathVariable name) {
         def locationApi = new RESTClient('http://maps.googleapis.com/maps/api/geocode/')
 
         def queryString = "json"
@@ -33,9 +34,10 @@ class Application extends WebMvcConfigurerAdapter {
         def resp = cityApi.get(path: str,
                 query: [units: 'si'])
 
-        [address: response.data.results.formatted_address[0], latitude:lat,longitude:lon, icon:resp.data.currently.icon,
-         temp:resp.data.currently.temperature]
+        [address: response.data.results.formatted_address[0], latitude: lat, longitude: lon, icon: resp.data.currently.icon,
+         temp   : resp.data.currently.temperature]
     }
+
     static void main(String[] args) {
         SpringApplication.run Application, args
     }
