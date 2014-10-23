@@ -1,15 +1,19 @@
 package ru.javabean.minimalg
 
 import groovyx.net.http.RESTClient
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
-
+import ru.javabean.minimalg.dao.PlaceRepository
+import ru.javabean.minimalg.model.Place
 
 @Configuration
 @ComponentScan
@@ -18,8 +22,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @RequestMapping("/api/v1")
 class Application extends WebMvcConfigurerAdapter {
 
-    @RequestMapping("/city/{name}")
-    Map yo(@PathVariable name) {
+    @Autowired
+    PlaceRepository placeRepository
+
+    @RequestMapping(value = "/place/{name}", method = RequestMethod.PUT)
+    void addPlace(@PathVariable name) {
         def locationApi = new RESTClient('http://maps.googleapis.com/maps/api/geocode/')
 
         def queryString = "json"
@@ -34,9 +41,22 @@ class Application extends WebMvcConfigurerAdapter {
         def resp = cityApi.get(path: str,
                 query: [units: 'si'])
 
-        [address: response.data.results.formatted_address[0], latitude: lat, longitude: lon, icon: resp.data.currently.icon,
-         temp   : resp.data.currently.temperature]
+        def place = new Place()
+        place.setName(name)
+        place.setAddress(response.data.results.formatted_address[0])
+        place.setLatitude(lat)
+        place.setLongitude(lon)
+        place.setIcon(resp.data.currently.icon)
+        place.setTemp(resp.data.currently.temperature)
+        placeRepository.save(place)
     }
+
+    @RequestMapping(value = "/place", method = RequestMethod.GET)
+    getPlaces() {
+        placeRepository.findAll()
+
+    }
+
 
     static void main(String[] args) {
         SpringApplication.run Application, args

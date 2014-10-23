@@ -66,7 +66,7 @@
 
         .controller("MainCtrl", ['$rootScope', '$scope', '$log' , '$state', '$modal', 'Restangular', '$location', '$auth',
             function ($rootScope, $scope, $log, $state, $modal, Restangular, $location, $auth) {
-                $scope.test = 'pupa';
+                $scope.test = 'ArchComm';
                 $scope.navbarCollapsed = true;
                 $scope.isActive = function (viewLocation) {
                     return viewLocation === $location.path();

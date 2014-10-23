@@ -15,9 +15,14 @@
       </span>
         </div>
         <div class="list-group margin-top-20" ng-repeat="place in model.places">
+            <a ng-href="http://en.wikipedia.org/wiki/{{place.name}}" class="list-group-item" target="_blank">
+                <h4 class="list-group-item-heading">{{place.address}}</h4>
 
-            <a href="#" class="list-group-item text-center" ng-click="selectProfile(profile.ID_PROFILE)"><h4><span
-                    class="climacon" ng-class="place.icon" style="font-size: 2em;"></span> {{place.address}} {{place.temp}}</h4></a>
+                <p class="list-group-item-text"><span
+                        class="climacon thermometer"
+                        ng-class="{'low':place.temp<0,'medium-low':place.temp>0,'high':place.temp>10,'full':place.temp>20}"
+                        style="font-size: 2em;"></span>Temperature:{{place.temp}} Coordinates:{{place.latitude}},{{place.longitude}}</p>
+            </a>
         </div>
     </div>
 </div>
