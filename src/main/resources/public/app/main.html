@@ -16,19 +16,16 @@
 
         <div class="collapse navbar-collapse" collapse="navbarCollapsed">
             <ul class="nav navbar-nav">
-                <li ng-class="{active: isActive('/main/places')}"><a href="#/main/places"
+                <li ng-if="isAuthenticated()" ng-class="{active: isActive('/main/places')}"><a href="#/main/places"
                         >Places</a></li>
-                <li ng-class="{active: isActive('/main/faces')}"><a href="#/main/faces"
+                <li ng-if="isAuthenticated()" ng-class="{active: isActive('/main/faces')}"><a href="#/main/faces"
                         >Faces</a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right" ng-show="user">
-                <li class="dropdown">
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user fa-lg separated"></i>
-                        {{user.name}} <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="" ng-click="logout()">Logout</a></li>
-                    </ul>
-                </li>
+            <ul ng-if="!isAuthenticated()" class="nav navbar-nav pull-right">
+                <li><a href="/#/login">Login</a></li>
+            </ul>
+            <ul ng-if="isAuthenticated()" class="nav navbar-nav pull-right">
+                <li><a href="/#/logout">Logout</a></li>
             </ul>
         </div>
     </div>
