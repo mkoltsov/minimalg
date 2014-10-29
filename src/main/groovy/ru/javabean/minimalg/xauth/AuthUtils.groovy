@@ -15,7 +15,7 @@ import java.text.ParseException
 public final class AuthUtils {
 
     private static final JWSHeader JWT_HEADER = new JWSHeader(JWSAlgorithm.HS256)
-    private static final String TOKEN_SECRET = "archcommpresentation"
+    private static final String TOKEN_SECRET = "minimalg"
 
     public static String getSubject(String authHeader) throws ParseException {
         return decodeToken(authHeader).getSubject()
